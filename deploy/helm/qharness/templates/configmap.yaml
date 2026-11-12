@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "qharness.fullname" . }}-config
+  labels:
+    {{- include "qharness.name" . | nindent 4 }}
+data:
+  QH_PROVIDER: {{ .Values.config.provider | quote }}
+  QH_MODEL: {{ .Values.config.model | quote }}
+  QH_STRATEGY: {{ .Values.config.strategy | quote }}
+  QH_MAX_TURNS: {{ .Values.config.maxTurns | quote }}

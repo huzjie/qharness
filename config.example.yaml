@@ -1,0 +1,86 @@
+# qharness 全量配置模板 —— 复制为 config.yaml 使用（也可以全部用环境变量 QH_* 覆盖）
+# 内核（events/bus/session/brain/hand/...）默认纯标准库、离线可跑，无需任何外部依赖。
+
+home: ~/.qharness
+log_dir: ~/.qharness/logs
+log_level: INFO
+
+# 默认后端：mock（离线，零依赖）| qwen | openai | deepseek | glm | kimi | ollama | vllm | sglang
+provider: mock
+model: qharness-mock
+api_key: null
+base_url: null          # 真实后端地址，如 https://dashscope.aliyuncs.com/compatible-mode/v1
+
+# ---- 事件模型 ----
+events:
+  clock: lamport         # lamport | wall
+  codec: json            # json
+  trace: true            # 是否记录事件因果链（causation）
+
+# ---- 事件总线 ----
+bus:
+  backend: memory        # memory | socket | redis
+  topics: ["user_message", "tool_call", "tool_result", "assistant_message", "system"]
+  backpressure: 4096     # 队列高水位
+  address: null          # socket/redis 总线地址
+
+# ---- 会话 ----
+session:
+  max_turns: 40          # 单次运行最大 Agent 轮数
+  max_messages: 200      # 会话最大消息数
+  checkpoint: true       # 是否开启检查点断点续跑
+  store: memory          # memory | file
+
+# ---- 脑（推理编排）----
+brain:
+  strategy: react         # react | plan_execute | reflect
+  max_plan_steps: 8
+  temperature: 0.0
+  context_window: 8192
+  auto_compact: true
+
+# ---- 手（工具执行）----
+hand:
+  timeout_ms: 30000      # 单次工具调用超时
+  max_concurrent: 4      # 最大并发工具执行
+  sandbox: process       # process | none
+  allowlist: true        # 是否启用命令白名单
+  deny_commands: ["rm", "rmdir", "del", "format", "shutdown", "mkfs"]
+
+# ---- 接入层 ----
+ingress:
+  http:
+    host: 127.0.0.1
+    port: 8000
+    auth_token: null
+    openai_compat: true  # 是否暴露 OpenAI 兼容 /v1/chat/completions
+  websocket:
+    enabled: true
+    path: /ws
+
+# ---- 调度层 ----
+scheduler:
+  max_sessions: 64
+  priority: fifo          # fifo | priority | fair
+  queue_size: 512
+  preempt: false
+
+# ---- 执行层 ----
+executor:
+  max_workers: 8
+  cpu_limit: 0.8
+  mem_limit_mb: 2048
+
+# ---- 分布式 ----
+dist:
+  mode: standalone        # standalone | cluster
+  node_id: null
+  shard_key: session_id
+  discovery: static       # static | gossip
+  peers: []               # 集群节点列表
+
+# ---- 观测 ----
+observability:
+  metrics: true
+  tracing: true
+  audit: true

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qharness-brain
+  namespace: qharness
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qharness-brain
+  template:
+    metadata:
+      labels:
+        app: qharness-brain
+    spec:
+      containers:
+        - name: brain
+          image: qharness:latest
+          imagePullPolicy: IfNotPresent
+          args: ["serve", "--port", "8000"]
+          envFrom:
+            - configMapRef:
+                name: qharness-config
+          ports:
+            - containerPort: 8000
+          resources:
+            requests: { cpu: "250m", memory: "512Mi" }
+            limits: { cpu: "1", memory: "1Gi" }

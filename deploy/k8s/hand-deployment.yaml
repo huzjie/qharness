@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qharness-hand
+  namespace: qharness
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: qharness-hand
+  template:
+    metadata:
+      labels:
+        app: qharness-hand
+    spec:
+      containers:
+        - name: hand
+          image: qharness:latest
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "qharness.cli.main", "doctor"]
+          envFrom:
+            - configMapRef:
+                name: qharness-config
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }

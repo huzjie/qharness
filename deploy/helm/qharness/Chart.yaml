@@ -1,0 +1,6 @@
+apiVersion: v2
+name: qharness
+description: 可嵌入的编码智能体运行时 Helm Chart
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

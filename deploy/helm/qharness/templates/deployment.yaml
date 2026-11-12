@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "qharness.fullname" . }}-brain
+  labels:
+    {{- include "qharness.name" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount.brain }}
+  selector:
+    matchLabels:
+      app: {{ include "qharness.fullname" . }}-brain
+  template:
+    metadata:
+      labels:
+        app: {{ include "qharness.fullname" . }}-brain
+    spec:
+      containers:
+        - name: brain
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["serve", "--port", "8000"]
+          envFrom:
+            - configMapRef:
+                name: {{ include "qharness.fullname" . }}-config
+          ports:
+            - containerPort: 8000
+          resources:
+            {{- toYaml .Values.resources.brain | nindent 12 }}

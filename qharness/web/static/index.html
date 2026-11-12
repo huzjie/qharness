@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>qharness 控制台</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <header>
+    <h1>qharness <span>编码智能体运行时控制台</span></h1>
+    <div id="status" class="pill">连接中…</div>
+  </header>
+  <main>
+    <section class="composer">
+      <textarea id="prompt" rows="4" placeholder="输入编码任务，例如：创建一个 Flask TODO 应用，含增删改查接口"></textarea>
+      <div class="actions">
+        <select id="strategy">
+          <option value="react">ReAct</option>
+          <option value="plan_execute">Plan-Execute</option>
+          <option value="reflect">Reflect</option>
+        </select>
+        <button id="send">运行任务</button>
+      </div>
+    </section>
+    <section class="output">
+      <h2>执行结果</h2>
+      <pre id="result">（尚未运行）</pre>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>

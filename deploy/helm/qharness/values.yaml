@@ -1,0 +1,38 @@
+# qharness Helm values
+replicaCount:
+  brain: 2
+  hand: 4
+
+image:
+  repository: qharness
+  tag: latest
+  pullPolicy: IfNotPresent
+
+config:
+  provider: mock
+  model: qharness-mock
+  strategy: react
+  maxTurns: 40
+  authToken: ""
+
+service:
+  type: LoadBalancer
+  port: 8000
+
+resources:
+  brain:
+    requests: { cpu: "250m", memory: "512Mi" }
+    limits: { cpu: "1", memory: "1Gi" }
+  hand:
+    requests: { cpu: "100m", memory: "256Mi" }
+    limits: { cpu: "500m", memory: "512Mi" }
+
+ingress:
+  enabled: false
+  host: qharness.example.com
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80

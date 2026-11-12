@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qharness"
+version = "0.1.0"
+description = "可嵌入的编码智能体运行时（统一事件模型 / 事件总线 / 手脑分离 / 分布式演进）"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "huzjie" }]
+keywords = ["coding-agent", "agent-runtime", "event-bus", "event-driven", "agent-harness", "tool-calling", "llm", "multi-agent", "distributed-agents", "sandbox", "openai-compatible"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = []
+
+[project.optional-dependencies]
+api = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6"]
+yaml = ["pyyaml>=6.0"]
+web = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6"]
+all = ["fastapi>=0.110", "uvicorn>=0.29", "pydantic>=2.6", "pyyaml>=6.0"]
+
+[project.scripts]
+qharness = "qharness.cli.main:main"
+
+[tool.setuptools.packages.find]
+include = ["qharness*"]

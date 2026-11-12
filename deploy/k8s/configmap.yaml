@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qharness-config
+  namespace: qharness
+data:
+  QH_PROVIDER: "mock"
+  QH_MODEL: "qharness-mock"
+  QH_STRATEGY: "react"
+  QH_MAX_TURNS: "40"

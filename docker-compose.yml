@@ -1,0 +1,15 @@
+services:
+  qharness:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      QH_PROVIDER: ${QH_PROVIDER:-mock}
+      QH_MODEL: ${QH_MODEL:-qharness-mock}
+      QH_API_KEY: ${QH_API_KEY:-}
+    volumes:
+      - qharness_home:/root/.qharness
+    restart: unless-stopped
+
+volumes:
+  qharness_home:
